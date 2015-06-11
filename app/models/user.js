@@ -23,4 +23,22 @@ db.userSchema.methods.comparePassword = function(attemptedPassword,callback){
 var User = mongoose.model('User',db.userSchema);
 
 
-module.exports = User;
+exports.findUser = function(username,callback){
+  User.find()
+    .where('username').equals(username)
+    .exec(function(err,data){
+      if(err)callback(err);
+      callback(data);
+    });
+};
+
+exports.createUser = function(username,password,callback){
+  var user = new User({
+    username:username,
+    password:password
+  });
+  user.save(function(err){
+    if(err)console.log(err);
+    callback(user);
+  });
+};
