@@ -2,6 +2,14 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    gitpush:{
+      your_target:{
+        options:{
+          remote:'azure',
+          branch:'master'
+        }
+      }
+    },
     clean: {
       js: ["public/dist/*.js","!public/dist/*.min.js"]
     },
@@ -54,6 +62,11 @@ module.exports = function(grunt) {
     jshint: {
       files: [
         // Add filespec list here
+        'server.js',
+        'server-config.js',
+        'lib/*.js',
+        'app/config.js',
+        'app/models/**/*.js'
       ],
       options: {
         force: 'true',
@@ -66,6 +79,11 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      target: {
+        files: {
+          'public/dist/style.min.css': ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -99,6 +117,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-git');
   grunt.loadNpmTasks('grunt-nodemon');
 
   grunt.registerTask('server-dev', function (target) {
@@ -123,15 +142,17 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'clean',
     'concat',
     'uglify',
+    'cssmin',
     'clean'
   ]);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run(['gitpush']);
+
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -139,6 +160,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+    'test',
+    'build',
+    'jshint'
   ]);
 
 

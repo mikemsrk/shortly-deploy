@@ -8,6 +8,7 @@ iisnode.yml
 Icon
 public/client
 public/lib
+public/style.css
 node_modules
 db
 test/npm-debug.log
