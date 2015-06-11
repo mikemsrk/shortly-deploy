@@ -6,8 +6,11 @@ iisnode.yml
 
 # Icon must ends with two \r.
 Icon
-
-
+public/client
+public/lib
+node_modules
+db
+test/npm-debug.log
 
 
 # Floobits

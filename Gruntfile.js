@@ -2,7 +2,29 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: {
+      js: ["public/dist/*.js","!public/dist/*.min.js"]
+    },
     concat: {
+      basic: {
+        src: ['public/lib/jquery.js',
+              'public/lib/underscore.js',
+              'public/lib/backbone.js',
+              'public/lib/handlebars.js'
+              ],
+        dest: 'public/dist/lib.js' 
+      },
+      extras: {
+        src: ['public/client/app.js',
+              'public/client/link.js',
+              'public/client/links.js',
+              'public/client/linkView.js',
+              'public/client/linksView.js',
+              'public/client/createLinkView.js',
+              'public/client/router.js',
+              ],
+        dest: 'public/dist/main.js'
+      }
     },
 
     mochaTest: {
@@ -21,6 +43,12 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/main.min.js': ['public/dist/main.js'],
+          'public/dist/lib.min.js': ['public/dist/lib.js']
+        }
+      }
     },
 
     jshint: {
@@ -66,6 +94,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-mocha-test');
@@ -94,6 +123,10 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'clean',
+    'concat',
+    'uglify',
+    'clean'
   ]);
 
   grunt.registerTask('upload', function(n) {
