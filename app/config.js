@@ -1,7 +1,12 @@
 var path = require('path');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test');
+if(process.env.PORT){
+  mongoose.connect('mongodb://MongoLab-4:hbr_o1kgEOz63XBvflkBNKM0R1HTYCQ24eNB_2S5FrY-@ds036698.mongolab.com:36698/MongoLab-4');
+}else{
+  mongoose.connect('mongodb://localhost/test');
+}
+
 var db = mongoose.connection;
 var Schema = mongoose.Schema;
 

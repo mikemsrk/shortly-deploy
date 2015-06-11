@@ -6,9 +6,6 @@
   "repository": "",
   "license": "Proprietary",
   "private": true,
-  "scripts": {
-    "test": "node server.js & mocha test/ServerSpec.js; RES=$?; kill %1; exit $RES"
-  },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "1.0.8",
